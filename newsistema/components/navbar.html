@@ -1,0 +1,78 @@
+<html><head><title>Navbar</title><link href="../style/global.css" rel="stylesheet"/></head><body><i class="fa fa-bell" id="notificacoes"></i><h1>Navbar</h1>
+<nav class="navbar navbar-expand-lg navbar-dark fixed-top shadow" style="background-color: var(--primary-color);">
+<div class="container-fluid justify-content-between">
+<a class="navbar-brand d-flex align-items-center gap-2" href="pages/menu.html">
+<i class="bi bi-box-seam"></i>
+<span class="h5 mb-0">BETA</span>
+</a>
+<div class="dropdown">
+<div aria-expanded="false" class="user-profile d-flex align-items-center gap-2" data-bs-toggle="dropdown" id="userDropdownToggle" role="button">
+<div class="avatar" id="userAvatar">UT</div>
+<div class="user-info d-none d-md-block">
+<span class="user-name" id="userName">Usuário</span>
+<i class="bi bi-chevron-down dropdown-arrow"></i>
+</div>
+</div>
+<ul class="dropdown-menu dropdown-menu-end mt-2">
+<li>
+<a class="dropdown-item" href="pages/perfil.html">
+<i class="bi bi-person-circle me-2"></i>Perfil
+          </a>
+</li>
+<li>
+<a class="dropdown-item" href="pages/configuracoes.html">
+<i class="bi bi-gear me-2"></i>Configurações
+          </a>
+</li>
+<li><hr class="dropdown-divider"/></li>
+<li>
+<button class="dropdown-item text-danger" id="logoutBtn">
+<i class="bi bi-box-arrow-right me-2"></i>Sair
+          </button>
+</li>
+</ul>
+</div>
+</div>
+</nav>
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
+  import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyC6E9U_uW_Sd3cVV4_qg0HFpR4lswiHGTU",
+    authDomain: "ong-novo-amanha.firebaseapp.com",
+    projectId: "ong-novo-amanha",
+    storageBucket: "ong-novo-amanha.appspot.com",
+    messagingSenderId: "451761836386",
+    appId: "1:451761836386:web:301f6b215679e25d91d381"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+
+  const logoutBtn = document.getElementById("logoutBtn");
+  if (logoutBtn) {
+    logoutBtn.addEventListener("click", () => {
+      signOut(auth).then(() => {
+        window.location.href = "../index.html";
+      }).catch((error) => {
+        console.error("Erro ao fazer logout:", error);
+      });
+    });
+  }
+
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      const name = user.displayName || "Usuário";
+      const email = user.email || "";
+      const initials = name.trim().split(" ").map(n => n[0]).join("").toUpperCase().slice(0, 2);
+      document.getElementById("userName").textContent = name;
+      document.getElementById("userAvatar").textContent = initials;
+    }
+  });
+</script>
+<div class="assistente" id="assistente-virtual">
+<input id="chat-input" placeholder="Digite sua pergunta..." type="text"/>
+<button id="enviar-chat">Enviar</button>
+</div>
+<script src="../script/global.js"></script></body></html>

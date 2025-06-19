@@ -1,0 +1,350 @@
+.gallery-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1rem;
+}
+
+/* Header da Galeria */
+.gallery-header {
+    background: linear-gradient(45deg, var(--primary-color), var(--primary-color-dark));
+    padding: 2rem;
+    border-radius: 15px;
+    margin-bottom: 2rem;
+    color: white;
+    box-shadow: var(--card-shadow);
+}
+
+.gallery-header h2 {
+    font-size: 2rem;
+    font-weight: 600;
+    margin: 0;
+}
+
+.gallery-stats {
+    display: flex;
+    gap: 2rem;
+    margin-top: 1rem;
+}
+
+.stat-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.stat-item i {
+    font-size: 1.2rem;
+    opacity: 0.8;
+}
+
+.stat-item span {
+    font-size: 0.9rem;
+    opacity: 0.9;
+}
+
+/* Cards de Álbuns */
+.album-card {
+    transition: all 0.3s ease;
+    cursor: pointer;
+    border: none;
+    background: var(--card-bg);
+    box-shadow: var(--card-shadow);
+    position: relative;
+    overflow: hidden;
+}
+
+.album-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(45deg, var(--primary-color), transparent);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.album-card:hover {
+    transform: translateY(-5px) scale(1.02);
+    box-shadow: var(--card-shadow-hover);
+}
+
+.album-card:hover::before {
+    opacity: 0.1;
+}
+
+.album-card .card-body {
+    padding: 1.5rem;
+}
+
+.album-preview {
+    background-color: var(--bg-light);
+    border-radius: 8px;
+    overflow: hidden;
+    min-height: 150px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.empty-album {
+    text-align: center;
+    color: var(--text-muted);
+    padding: 2rem;
+}
+
+.empty-album i {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+    display: block;
+}
+
+/* Grid de Preview */
+.preview-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 4px;
+    aspect-ratio: 16/9;
+    border-radius: 10px;
+    overflow: hidden;
+    position: relative;
+}
+
+.preview-grid::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to bottom, transparent 50%, rgba(0,0,0,0.3));
+    pointer-events: none;
+}
+
+.preview-item {
+    position: relative;
+    overflow: hidden;
+}
+
+.preview-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.preview-item:hover img {
+    transform: scale(1.1);
+}
+
+.preview-item.more-photos {
+    background-color: rgba(0, 0, 0, 0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: 600;
+    backdrop-filter: blur(4px);
+    transition: all 0.3s ease;
+}
+
+.preview-item.more-photos:hover {
+    background-color: rgba(0, 0, 0, 0.8);
+    transform: scale(1.05);
+}
+
+/* Grid de Fotos no Modal */
+.foto-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 1rem;
+    padding: 1.5rem;
+    animation: fadeIn 0.5s ease-out;
+}
+
+@media (min-width: 768px) {
+    .foto-grid {
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    }
+}
+
+.foto-item {
+    aspect-ratio: 1;
+    overflow: hidden;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+.foto-item::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to bottom, transparent 50%, rgba(0,0,0,0.5));
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: 1;
+    pointer-events: none;
+}
+
+.foto-item:hover {
+    transform: scale(1.05) translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+}
+
+.foto-item:hover::before {
+    opacity: 1;
+}
+
+.foto-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Modais */
+.modal-content {
+    border: none;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+    animation: modalFadeIn 0.3s ease-out;
+}
+
+@keyframes modalFadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.95) translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+.modal-header {
+    background-color: var(--bg-light);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.modal-footer {
+    background-color: var(--bg-light);
+    border-top: 1px solid var(--border-color);
+}
+
+/* Botões e Ações */
+.btn-purple {
+    background: linear-gradient(45deg, var(--primary-color), var(--primary-color-dark));
+    color: white;
+    border: none;
+    padding: 0.7rem 1.5rem;
+    border-radius: 12px;
+    transition: all 0.3s ease;
+    font-weight: 500;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(var(--primary-color-rgb), 0.3);
+}
+
+.btn-purple:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(var(--primary-color-rgb), 0.4);
+    color: white;
+}
+
+.btn-purple:active {
+    transform: translateY(0);
+    box-shadow: 0 4px 15px rgba(var(--primary-color-rgb), 0.3);
+}
+
+.btn-purple i {
+    transition: transform 0.3s ease;
+}
+
+.btn-purple:hover i {
+    transform: scale(1.2);
+}
+
+.dropdown-menu {
+    border: none;
+    box-shadow: var(--dropdown-shadow);
+    border-radius: 8px;
+}
+
+.dropdown-item {
+    padding: 0.5rem 1rem;
+    transition: background-color 0.2s;
+}
+
+.dropdown-item:hover {
+    background-color: var(--bg-light);
+}
+
+.dropdown-item.text-danger:hover {
+    background-color: var(--danger-light);
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    .foto-grid {
+        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+        gap: 0.5rem;
+    }
+}
+
+/* Animações */
+@keyframes fadeIn {
+    from { 
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to { 
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(-20px);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+.album-card {
+    animation: fadeIn 0.5s ease-out;
+    animation-fill-mode: both;
+}
+
+.album-card:nth-child(odd) {
+    animation-delay: 0.1s;
+}
+
+.album-card:nth-child(even) {
+    animation-delay: 0.2s;
+}
+
+/* Loading States */
+.loading-skeleton {
+    background: linear-gradient(90deg, var(--bg-light) 25%, var(--bg-lighter) 50%, var(--bg-light) 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+}
+
+@keyframes shimmer {
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
+}

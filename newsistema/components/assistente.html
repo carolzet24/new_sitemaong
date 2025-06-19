@@ -1,0 +1,44 @@
+<html><head><title>Assistente</title><link href="../style/global.css" rel="stylesheet"/></head><body><i class="fa fa-bell" id="notificacoes"></i><h1>Assistente</h1><!-- Botão flutuante da Beta -->
+<div class="beta-floating-button" id="beta-button" title="Fale com a Beta">
+<i class="bi bi-robot"></i>
+</div>
+<!-- Painel lateral da Beta -->
+<div class="beta-drawer" id="beta-drawer">
+<div class="beta-header">
+<h5>Assistente Beta</h5>
+<button class="beta-close-button" id="beta-close">
+<i class="bi bi-x"></i>
+</button>
+</div>
+<div class="beta-chat">
+<!-- Área de mensagens -->
+<div class="beta-messages">
+<!-- Exemplo de mensagem da Beta -->
+<div class="beta-message beta-bot">
+<div class="beta-avatar">
+<i class="bi bi-robot"></i>
+</div>
+<div class="beta-bubble">
+                    Olá! Eu sou a Beta, sua assistente virtual. Como posso ajudar?
+                </div>
+</div>
+<!-- Exemplo de mensagem do usuário -->
+<div class="beta-message beta-user">
+<div class="beta-bubble">
+                    Digite sua dúvida acima e eu farei o possível para ajudar!
+                </div>
+</div>
+</div>
+<div class="beta-input-area">
+<div class="input-group">
+<input class="form-control" id="beta-input" placeholder="Digite sua dúvida..." type="text"/>
+<button class="btn btn-primary" id="beta-send" title="Enviar"><i class="bi bi-send"></i></button>
+</div>
+</div>
+</div>
+</div>
+<div class="assistente" id="assistente-virtual">
+<input id="chat-input" placeholder="Digite sua pergunta..." type="text"/>
+<button id="enviar-chat">Enviar</button>
+</div>
+<script src="../script/global.js"></script></body></html>

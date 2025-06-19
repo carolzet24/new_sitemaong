@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8"/>
+<title>
+   Exportar Arquivos Firebase
+  </title>
+<script type="module">
+   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import { getStorage, ref, listAll, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyBIG-2A1Bjog0XlS2BDIa1hd-PlrY7W0v4",
+      authDomain: "sistema-ong-c6c05.firebaseapp.com",
+      projectId: "sistema-ong-c6c05",
+      storageBucket: "sistema-ong-c6c05.appspot.com",
+      messagingSenderId: "326382290585",
+      appId: "1:326382290585:web:c22a5588b9f71394c2c53a"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const storage = getStorage(app);
+
+    async function exportarArquivos() {
+      const pastas = ['documentos/', 'galeria/', 'comprovantes/'];
+      let linhas = [["Nome do Arquivo", "Pasta", "Link de Acesso"]];
+
+      for (const pasta of pastas) {
+        const pastaRef = ref(storage, pasta);
+        try {
+          const resultado = await listAll(pastaRef);
+          for (const itemRef of resultado.items) {
+            const url = await getDownloadURL(itemRef);
+            linhas.push([itemRef.name, pasta, url]);
+          }
+        } catch (e) {
+          console.error("Erro ao acessar pasta:", pasta, e);
+        }
+      }
+
+      let csvContent = "data:text/csv;charset=utf-8," + linhas.map(e => e.join(",")).join("\n");
+      const encodedUri = encodeURI(csvContent);
+      const link = document.createElement("a");
+      link.setAttribute("href", encodedUri);
+      link.setAttribute("download", "exportacao_dinamica_arquivos.csv");
+      document.body.appendChild(link);
+      link.click();
+    }
+  </script>
+<link href="../style/global.css" rel="stylesheet"/></head>
+<body style="font-family: sans-serif; padding: 40px;"><i class="fa fa-bell" id="notificacoes"></i>
+<h1>
+   Exportar arquivos
+  </h1>
+<h2>
+   📥 Exportar Arquivos Reais do Firebase
+  </h2>
+<p>
+   Este botão coleta em tempo real os documentos, comprovantes e fotos salvos no sistema e gera um backup (.CSV) com links diretos:
+  </p>
+<button onclick="exportarArquivos()" style="padding: 10px 20px; font-size: 16px; cursor: pointer;">
+   📄 Baixar Exportação Dinâmica (CSV)
+  </button>
+<div class="assistente" id="assistente-virtual">
+<input id="chat-input" placeholder="Digite sua pergunta..." type="text"/>
+<button id="enviar-chat">Enviar</button>
+</div>
+<script src="../script/global.js"></script></body>
+</html>

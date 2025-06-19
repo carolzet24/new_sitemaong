@@ -1,0 +1,416 @@
+/* Container principal do calendário */
+.calendar-container {
+    display: grid;
+    grid-template-columns: 250px 1fr 250px;
+    gap: 20px;
+    padding: 20px;
+    background-color: var(--card-bg);
+    border-radius: 15px;
+    box-shadow: var(--card-shadow);
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Mini calendários */
+.mini-calendar {
+    background: var(--card-bg);
+    padding: 15px;
+    border-radius: 12px;
+    box-shadow: var(--card-shadow);
+    border: 1px solid var(--border-color);
+}
+
+.mini-calendar h5 {
+    color: var(--text-color);
+    text-transform: capitalize;
+    margin-bottom: 15px;
+    font-size: 1rem;
+    text-align: center;
+}
+
+/* Calendário principal */
+.main-calendar {
+    background: var(--card-bg);
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: var(--card-shadow);
+    border: 1px solid var(--border-color);
+}
+
+.main-document-preview {
+    background: white;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: var(--card-shadow);
+    margin-bottom: 20px;
+    border: 1px solid var(--border-color);
+    max-height: 60vh;
+    overflow-y: auto;
+    font-size: 0.9rem;
+    line-height: 1.4;
+}
+
+.calendar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.current-month {
+    color: var(--text-color);
+    text-transform: capitalize;
+    margin: 0;
+    font-size: 1.5rem;
+}
+
+/* Grid do calendário */
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 8px;
+}
+
+.calendar-grid.small {
+    gap: 4px;
+    font-size: 0.8em;
+}
+
+.calendar-weekday {
+    text-align: center;
+    font-weight: 600;
+    color: var(--text-muted);
+    padding: 8px 0;
+    font-size: 0.9em;
+}
+
+.calendar-day {
+    aspect-ratio: 1;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 8px;
+    cursor: pointer;
+    position: relative;
+    background: var(--card-bg);
+    color: var(--text-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+}
+
+.calendar-day:hover {
+    background-color: var(--hover-bg);
+    border-color: var(--primary-color);
+}
+
+.calendar-day.today {
+    background-color: var(--primary-color-light);
+    border-color: var(--primary-color);
+    font-weight: 600;
+}
+
+.calendar-day.selected {
+    background-color: var(--primary-color);
+    color: white;
+    border-color: var(--primary-color);
+}
+
+.calendar-day.has-event::after {
+    content: '';
+    position: absolute;
+    bottom: 4px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 6px;
+    height: 6px;
+    background-color: var(--primary-color);
+    border-radius: 50%;
+}
+
+.calendar-day.other-month {
+    color: var(--text-muted);
+    background-color: var(--card-bg-secondary);
+}
+
+/* Categorias de eventos */
+.calendar-day.has-event::after {
+    content: '';
+    position: absolute;
+    bottom: 4px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+}
+
+.calendar-day.has-event[data-categoria='geral']::after {
+    background-color: var(--primary-color);
+}
+
+.calendar-day.has-event[data-categoria='reuniao']::after {
+    background-color: #dc3545;
+}
+
+.calendar-day.has-event[data-categoria='tarefa']::after {
+    background-color: #198754;
+}
+
+.calendar-day.has-event[data-categoria='evento']::after {
+    background-color: #ffc107;
+}
+
+.calendar-day.has-event[data-categoria='outro']::after {
+    background-color: #6c757d;
+}
+
+/* Lista de eventos */
+.evento-item {
+    border-left: 4px solid transparent;
+    margin-bottom: 8px;
+    padding: 12px;
+    background: var(--card-bg);
+    border-radius: 8px;
+    box-shadow: var(--card-shadow);
+    transition: all 0.2s ease;
+}
+
+.evento-item:hover {
+    transform: translateX(4px);
+    background: var(--hover-bg);
+}
+
+.evento-item.categoria-geral {
+    border-left-color: var(--primary-color);
+}
+
+.evento-item.categoria-reuniao {
+    border-left-color: #dc3545;
+}
+
+.evento-item.categoria-tarefa {
+    border-left-color: #198754;
+}
+
+.evento-item.categoria-evento {
+    border-left-color: #ffc107;
+}
+
+.evento-item.categoria-outro {
+    border-left-color: #6c757d;
+}
+
+.evento-hora {
+    font-size: 0.9em;
+    color: var(--text-muted);
+}
+
+.evento-titulo {
+    font-weight: 600;
+    color: var(--text-color);
+    margin: 4px 0;
+}
+
+.evento-descricao {
+    font-size: 0.9em;
+    color: var(--text-muted);
+    margin-bottom: 8px;
+}
+
+.evento-acoes {
+    display: flex;
+    gap: 8px;
+}
+
+.evento-acoes .btn {
+    padding: 4px 8px;
+    font-size: 0.9em;
+}
+
+/* Botões de navegação */
+.btn-link {
+    color: var(--primary-color);
+    text-decoration: none;
+    padding: 8px;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+}
+
+.btn-link:hover {
+    background-color: var(--hover-bg);
+    color: var(--primary-color);
+}
+
+/* Botões de alternância de visualização */
+.btn-group .btn {
+    border-color: var(--primary-color);
+    color: var(--primary-color);
+}
+
+.btn-group .btn.active {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+/* Visualização semanal */
+.week-view .calendar-grid {
+    display: grid;
+    grid-template-columns: 60px repeat(7, 1fr);
+    grid-template-rows: auto repeat(24, 60px);
+    gap: 1px;
+    background-color: var(--border-color);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.week-view .week-header {
+    background-color: var(--card-bg);
+    padding: 8px;
+    text-align: center;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.week-view .week-day {
+    font-weight: 600;
+    color: var(--text-color);
+}
+
+.week-view .week-date {
+    font-size: 0.8em;
+    color: var(--text-muted);
+}
+
+.week-view .week-time {
+    background-color: var(--card-bg);
+    padding: 4px 8px;
+    font-size: 0.8em;
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.week-view .week-cell {
+    background-color: var(--card-bg);
+    padding: 4px;
+    min-height: 60px;
+    position: relative;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.week-view .week-cell:hover {
+    background-color: var(--hover-bg);
+}
+
+.week-view .week-event {
+    padding: 4px 8px;
+    margin: 2px 0;
+    border-radius: 4px;
+    font-size: 0.9em;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.week-view .week-event:hover {
+    transform: translateX(4px);
+}
+
+.week-view .week-event.categoria-geral {
+    background-color: var(--primary-color-light);
+    border-left: 3px solid var(--primary-color);
+}
+
+.week-view .week-event.categoria-reuniao {
+    background-color: #ffe5e7;
+    border-left: 3px solid #dc3545;
+}
+
+.week-view .week-event.categoria-tarefa {
+    background-color: #e8f5e9;
+    border-left: 3px solid #198754;
+}
+
+.week-view .week-event.categoria-evento {
+    background-color: #fff8e1;
+    border-left: 3px solid #ffc107;
+}
+
+.week-view .week-event.categoria-outro {
+    background-color: #f8f9fa;
+    border-left: 3px solid #6c757d;
+}
+
+.week-view .event-time {
+    font-size: 0.8em;
+    color: var(--text-muted);
+}
+
+.week-view .event-title {
+    font-weight: 600;
+    color: var(--text-color);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Modal de evento */
+.modal-content {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 15px;
+}
+
+.modal-header {
+    border-bottom: 1px solid var(--border-color);
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+    padding: 1rem 1.5rem;
+}
+
+.modal-footer {
+    border-top: 1px solid var(--border-color);
+    padding: 1rem 1.5rem;
+}
+
+/* Responsividade */
+@media (max-width: 1200px) {
+    .calendar-container {
+        grid-template-columns: 200px 1fr 200px;
+    }
+}
+
+@media (max-width: 992px) {
+    .calendar-container {
+        grid-template-columns: 1fr;
+    }
+    
+    .mini-calendar {
+        display: none;
+    }
+}
+
+/* Estilos para eventos */
+.event-marker {
+    background-color: #007bff;
+    color: white;
+    padding: 2px 4px;
+    border-radius: 3px;
+    font-size: 0.8em;
+    margin: 1px 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.event-popup {
+    position: absolute;
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    z-index: 1000;
+}

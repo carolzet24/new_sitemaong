@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+
+<html lang="pt-br">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<title>
+   Registro de Chamada - ONG Novo Amanhã
+  </title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="../css/config-styles.css" rel="stylesheet"/>
+<link href="../css/global.css" rel="stylesheet"/>
+<link href="../css/navbar.css" rel="stylesheet"/>
+<link href="../css/chamada.css" rel="stylesheet"/>
+<link href="../css/background-pattern.css" rel="stylesheet"/>
+<link href="../css/themes.css" rel="stylesheet"/>
+<!-- Bootstrap JS Bundle -->
+<script src="../libs/bootstrap.bundle.min.js">
+</script>
+<!-- Firebase -->
+<script src="../libs/firebase-app-compat.js">
+</script>
+<script src="../libs/firebase-auth-compat.js">
+</script>
+<script src="../libs/firebase-firestore-compat.js">
+</script>
+<!-- Translations -->
+<script src="../js/translations.js">
+</script>
+<!-- Settings Manager -->
+<script src="../js/settings-manager.js">
+</script>
+<!-- Session Timeout -->
+<script src="../js/session-timeout.js">
+</script>
+<script src="../js/auth-guard.js" type="module">
+</script>
+<script src="../js/permissoes.js" type="module">
+</script>
+<script src="../js/preferencias.js" type="module">
+</script>
+<script src="../js/preferencia-aplicacao.js" type="module">
+</script>
+</head>
+<body class=""><i class="fa fa-bell" id="notificacoes"></i>
+<h1>
+   Chamada
+  </h1>
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark fixed-top shadow" style="background-color: var(--primary-color);">
+<div class="container-fluid">
+<a class="navbar-brand" href="#" style="display: flex; align-items: center; gap: 10px;">
+<i class="bi bi-box-seam">
+</i>
+<span class="h5 mb-0" data-i18n="platform_name">
+      Beta - Plataforma de Gestão
+     </span>
+</a>
+<div class="d-flex align-items-center">
+<a class="btn btn-outline-light me-3" href="pages/menu.html">
+<i class="bi bi-house-door">
+</i>
+      Início
+     </a>
+<div class="dropdown">
+<div aria-expanded="false" class="user-profile" data-bs-toggle="dropdown" id="userProfileDropdown">
+<div class="avatar" id="userAvatar">
+        UT
+       </div>
+<div class="user-info">
+<span class="user-name" data-i18n="user_name" id="userName">
+         Usuário
+        </span>
+<i class="bi bi-chevron-down dropdown-arrow">
+</i>
+</div>
+</div>
+<ul aria-labelledby="userProfileDropdown" class="dropdown-menu dropdown-menu-end">
+<li>
+<div class="dropdown-header">
+<div class="avatar-small" id="userAvatarSmall">
+          UT
+         </div>
+<div class="header-info">
+<span class="header-name" data-i18n="user_full_name" id="userNameFull">
+           Usuário
+          </span>
+<span class="header-email" data-i18n="user_email" id="userEmail">
+           usuario@email.com
+          </span>
+</div>
+</div>
+</li>
+<li>
+<hr class="dropdown-divider"/>
+</li>
+<li>
+<a class="dropdown-item" href="pages/perfil.html" title="Visualizar e editar seu perfil">
+<i class="bi bi-person-circle">
+</i>
+<div class="item-content">
+<span class="item-title" data-i18n="profile">
+           Perfil
+          </span>
+<span class="item-description" data-i18n="view_edit_profile">
+           Visualizar e editar suas informações
+          </span>
+</div>
+</a>
+</li>
+<li>
+<a class="dropdown-item" onclick="window.location.href='configuracoes.html'" style="cursor: pointer;" title="Ajustar configurações do sistema">
+<i class="bi bi-gear">
+</i>
+<div class="item-content">
+<span class="item-title" data-i18n="settings">
+           Configurações
+          </span>
+<span class="item-description" data-i18n="customize_experience">
+           Personalizar sua experiência
+          </span>
+</div>
+</a>
+</li>
+<li>
+<hr class="dropdown-divider"/>
+</li>
+<li>
+<a class="dropdown-item logout-item" href="#" id="btnLogout" title="Sair do sistema">
+<i class="bi bi-box-arrow-right">
+</i>
+<div class="item-content">
+<span class="item-title" data-i18n="logout">
+           Sair
+          </span>
+<span class="item-description" data-i18n="end_session">
+           Encerrar sessão
+          </span>
+</div>
+</a>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</nav>
+<!-- Conteúdo Principal -->
+<div class="container-fluid py-5 mt-5">
+<div class="row justify-content-center">
+<div class="col-12 col-xl-10">
+<!-- Cabeçalho com Título e Botões -->
+<div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-4 gap-3">
+<div>
+<h2 class="mb-1">
+        Salas e Oficinas
+       </h2>
+<p class="text-muted mb-0">
+        Gerencie suas salas e registre presenças
+       </p>
+</div>
+<div class="d-flex gap-2">
+<button class="btn btn-primary" data-bs-target="#modalCriarSala" data-bs-toggle="modal" type="button">
+<i class="bi bi-plus-lg me-2">
+</i>
+        Nova Sala
+       </button>
+</div>
+</div>
+<!-- Card Principal -->
+<div class="card shadow-sm">
+<!-- Barra de Pesquisa -->
+<div class="card-header bg-white py-3">
+<div class="row align-items-center">
+<div class="col-12 col-md-6">
+<div class="input-group">
+<span class="input-group-text bg-white border-end-0">
+<i class="bi bi-search">
+</i>
+</span>
+<input class="form-control border-start-0 ps-0" id="searchSalas" placeholder="Pesquisar por nome, professor ou oficina..." type="text"/>
+</div>
+</div>
+</div>
+</div>
+<!-- Lista de Salas -->
+<div class="card-body p-4">
+<div class="row g-4" id="listaSalas">
+<!-- Cards das salas serão inseridos aqui -->
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Modal Criar Sala -->
+<div class="modal fade" id="modalCriarSala" tabindex="-1">
+<div class="modal-dialog modal-lg modal-dialog-centered">
+<div class="modal-content">
+<div class="modal-header border-0 pb-0">
+<div>
+<h4 class="modal-title fw-bold">
+        Nova Sala
+       </h4>
+<p class="text-muted mb-0">
+        Preencha as informações da sala
+       </p>
+</div>
+<button class="btn-close" data-bs-dismiss="modal" type="button">
+</button>
+</div>
+<div class="modal-body p-4">
+<div class="container-fluid px-0">
+<div class="row justify-content-center">
+<div class="col-12 col-lg-10">
+<!-- Informações Básicas -->
+<div class="card shadow-sm mb-4">
+<div class="card-body p-4">
+<h6 class="card-subtitle mb-3 text-primary fw-bold">
+<i class="bi bi-info-circle me-2">
+</i>
+            Informações Básicas
+           </h6>
+<div class="mb-3">
+<label class="form-label fw-medium" for="nomeSala">
+<i class="bi bi-tag me-2">
+</i>
+             Nome da Sala
+            </label>
+<input class="form-control form-control-lg bg-light" id="nomeSala" placeholder="Ex: Sala 101" required="" type="text"/>
+</div>
+<div class="mb-3">
+<label class="form-label fw-medium" for="professorSala">
+<i class="bi bi-person me-2">
+</i>
+             Professor
+            </label>
+<select class="form-select form-select-lg bg-light" id="professorSala" required="">
+<option value="">
+              Selecione um professor
+             </option>
+</select>
+</div>
+<div class="mb-3">
+<label class="form-label fw-medium" for="oficinaSala">
+<i class="bi bi-book me-2">
+</i>
+             Nome da Oficina
+            </label>
+<input class="form-control form-control-lg bg-light" id="oficinaSala" placeholder="Ex: Matemática Básica" required="" type="text"/>
+</div>
+</div>
+</div>
+<!-- Horário e Dias -->
+<div class="card shadow-sm">
+<div class="card-body p-4">
+<h6 class="card-subtitle mb-3 text-primary fw-bold">
+<i class="bi bi-calendar-check me-2">
+</i>
+            Horário e Dias
+           </h6>
+<div class="mb-4">
+<label class="form-label fw-medium" for="horarioSala">
+<i class="bi bi-clock me-2">
+</i>
+             Horário da Aula
+            </label>
+<input class="form-control form-control-lg bg-light" id="horarioSala" required="" type="time"/>
+</div>
+<div>
+<label class="form-label fw-medium d-block mb-3">
+<i class="bi bi-calendar3 me-2">
+</i>
+             Dias da Semana
+            </label>
+<div class="row g-2 justify-content-center">
+<div class="col-auto">
+<input class="btn-check" id="segunda" name="diasSemana" type="checkbox" value="Segunda"/>
+<label class="btn btn-outline-primary px-3 fw-medium" for="segunda">
+               Segunda
+              </label>
+</div>
+<div class="col-auto">
+<input class="btn-check" id="terca" name="diasSemana" type="checkbox" value="Terça"/>
+<label class="btn btn-outline-primary px-3 fw-medium" for="terca">
+               Terça
+              </label>
+</div>
+<div class="col-auto">
+<input class="btn-check" id="quarta" name="diasSemana" type="checkbox" value="Quarta"/>
+<label class="btn btn-outline-primary px-3 fw-medium" for="quarta">
+               Quarta
+              </label>
+</div>
+<div class="col-auto">
+<input class="btn-check" id="quinta" name="diasSemana" type="checkbox" value="Quinta"/>
+<label class="btn btn-outline-primary px-3 fw-medium" for="quinta">
+               Quinta
+              </label>
+</div>
+<div class="col-auto">
+<input class="btn-check" id="sexta" name="diasSemana" type="checkbox" value="Sexta"/>
+<label class="btn btn-outline-primary px-3 fw-medium" for="sexta">
+               Sexta
+              </label>
+</div>
+<div class="col-auto">
+<input class="btn-check" id="sabado" name="diasSemana" type="checkbox" value="Sábado"/>
+<label class="btn btn-outline-warning px-3 fw-medium" for="sabado">
+               Sábado
+              </label>
+</div>
+<div class="col-auto">
+<input class="btn-check" id="domingo" name="diasSemana" type="checkbox" value="Domingo"/>
+<label class="btn btn-outline-warning px-3 fw-medium" for="domingo">
+               Domingo
+              </label>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="modal-footer border-0 pt-0">
+<button class="btn btn-light fw-medium px-4" data-bs-dismiss="modal" type="button">
+<i class="bi bi-x-lg me-2">
+</i>
+        Cancelar
+       </button>
+<button class="btn btn-primary fw-medium px-4" id="btnSalvarSala" type="button">
+<i class="bi bi-check-lg me-2">
+</i>
+        Salvar
+       </button>
+</div>
+</div>
+</div>
+</div>
+<!-- Modal Selecionar Alunos - Parte 2 -->
+<div aria-hidden="true" aria-labelledby="modalSelecionarAlunosLabel" class="modal fade" id="modalSelecionarAlunos" tabindex="-1">
+<div class="modal-dialog modal-dialog-centered modal-lg">
+<div class="modal-content">
+<div class="modal-header">
+<h5 class="modal-title" id="modalSelecionarAlunosLabel">
+        Selecionar Alunos
+       </h5>
+<button aria-label="Fechar" class="btn-close" data-bs-dismiss="modal" type="button">
+</button>
+</div>
+<div class="modal-body">
+<div class="mb-3">
+<input class="form-control" id="searchAlunos" placeholder="Pesquisar alunos..." type="text"/>
+</div>
+<div class="list-group" id="listaAlunos">
+<!-- Lista de alunos será carregada dinamicamente -->
+</div>
+</div>
+<div class="modal-footer">
+<button class="btn btn-secondary" id="btnVoltarPasso" type="button">
+        Voltar
+       </button>
+<button class="btn btn-primary" id="btnSalvarSala" type="button">
+        Salvar Sala
+       </button>
+</div>
+</div>
+</div>
+</div>
+<!-- Scripts da Página -->
+<script src="../js/chamada.js">
+</script>
+</div>
+<script>
+   document.addEventListener("DOMContentLoaded", function () {
+  const savedTheme = localStorage.getItem("modo-escuro");
+  if (savedTheme === "ativado") {
+    document.body.classList.add("modo-escuro");
+  }
+
+  const toggle = document.getElementById("toggle-modo-escuro");
+  if (toggle) {
+    toggle.addEventListener("click", () => {
+      document.body.classList.toggle("modo-escuro");
+      const ativado = document.body.classList.contains("modo-escuro");
+      localStorage.setItem("modo-escuro", ativado ? "ativado" : "desativado");
+    });
+  }
+});
+  </script>
+<!-- Assistente Beta fixa -->
+<div id="beta-button" style="position:fixed;bottom:20px;right:20px;z-index:99999;background:#7a00cc;color:#fff;border:none;border-radius:50%;width:60px;height:60px;display:flex;align-items:center;justify-content:center;box-shadow:0 0 10px rgba(0,0,0,0.3);cursor:pointer;font-size:28px;">
+   🤖
+  </div>
+<div id="beta-drawer" style="position:fixed;top:0;right:-400px;width:350px;max-width:100%;height:100vh;background:white;box-shadow:-2px 0 10px rgba(0,0,0,0.2);transition:right 0.3s ease-in-out;z-index:99998;padding:20px;overflow-y:auto;">
+<button id="beta-close" style="float:right;font-size:20px;border:none;background:none;cursor:pointer;">
+    ✖
+   </button>
+<h2>
+    Beta
+   </h2>
+<p>
+    Olá! Eu sou a assistente virtual da plataforma. Como posso ajudar?
+   </p>
+<input placeholder="Digite sua dúvida..." style="width:100%;padding:10px;margin-top:15px;border-radius:8px;border:1px solid #ccc;" type="text"/>
+</div>
+<script>
+   document.addEventListener("DOMContentLoaded", () => {
+  const betaButton = document.getElementById("beta-button");
+  const betaDrawer = document.getElementById("beta-drawer");
+  const betaClose = document.getElementById("beta-close");
+
+  if (betaButton && betaDrawer) {
+    betaButton.addEventListener("click", () => {
+      betaDrawer.style.right = "0";
+    });
+  }
+
+  if (betaClose && betaDrawer) {
+    betaClose.addEventListener("click", () => {
+      betaDrawer.style.right = "-400px";
+    });
+  }
+
+  document.addEventListener("click", (e) => {
+    if (
+      betaDrawer &&
+      !betaDrawer.contains(e.target) &&
+      !betaButton.contains(e.target)
+    ) {
+      betaDrawer.style.right = "-400px";
+    }
+  });
+});
+  </script>
+<script>
+   document.addEventListener('DOMContentLoaded', () => {
+    const html = document.documentElement;
+    const body = document.body;
+    const fonte = localStorage.getItem('preferenciaFonte');
+    const tema = localStorage.getItem('preferenciaTema');
+    const leitura = localStorage.getItem('preferenciaLeitura');
+
+    if (tema === 'escuro') html.classList.add('dark-mode');
+    else html.classList.remove('dark-mode');
+
+    if (leitura === 'ativado') html.classList.add('modo-leitura');
+    else html.classList.remove('modo-leitura');
+
+    if (fonte) {
+      html.style.setProperty('--tamanho-fonte', fonte);
+    }
+  });
+  </script>
+
+<div class="assistente" id="assistente-virtual">
+<input id="chat-input" placeholder="Digite sua pergunta..." type="text"/>
+<button id="enviar-chat">Enviar</button>
+</div>
+</body>
+</html>

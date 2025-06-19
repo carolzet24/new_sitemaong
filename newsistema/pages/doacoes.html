@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+
+<html lang="pt-br">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<title>
+   Controle de Doações - ONG Novo Amanhã
+  </title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="../css/config-styles.css" rel="stylesheet"/>
+<link href="../css/doacoes.css" rel="stylesheet"/>
+<link href="../css/global.css" rel="stylesheet"/>
+<link href="../css/navbar.css" rel="stylesheet"/>
+<link href="../css/cards.css" rel="stylesheet"/>
+<link href="../css/background-pattern.css" rel="stylesheet"/>
+<link href="../css/themes.css" rel="stylesheet"/>
+<script src="../js/auth-guard.js" type="module">
+</script>
+<script src="../js/permissoes.js" type="module">
+</script>
+<script src="../js/preferencias.js" type="module">
+</script>
+<script src="../js/preferencia-aplicacao.js" type="module">
+</script>
+</head>
+<body><i class="fa fa-bell" id="notificacoes"></i>
+<h1>
+   Doacoes
+  </h1>
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark fixed-top shadow" style="background-color: var(--primary-color);">
+<div class="container-fluid">
+<a class="navbar-brand" href="#" style="display: flex; align-items: center; gap: 10px;">
+<i class="bi bi-box-seam">
+</i>
+<span class="h5 mb-0" data-i18n="platform_name">
+      Beta - Plataforma de Gestão
+     </span>
+</a>
+<div class="d-flex align-items-center">
+<a class="btn btn-outline-light me-3" href="pages/menu.html">
+<i class="bi bi-house-door">
+</i>
+      Início
+     </a>
+<div class="dropdown">
+<div aria-expanded="false" class="user-profile" data-bs-toggle="dropdown" id="userProfileDropdown">
+<div class="avatar" id="userAvatar">
+        UT
+       </div>
+<div class="user-info">
+<span class="user-name" data-i18n="user_name" id="userName">
+         Usuário
+        </span>
+<i class="bi bi-chevron-down dropdown-arrow">
+</i>
+</div>
+</div>
+<ul aria-labelledby="userProfileDropdown" class="dropdown-menu dropdown-menu-end">
+<li>
+<div class="dropdown-header">
+<div class="avatar-small" id="userAvatarSmall">
+          UT
+         </div>
+<div class="header-info">
+<span class="header-name" data-i18n="user_full_name" id="userNameFull">
+           Usuário
+          </span>
+<span class="header-email" data-i18n="user_email" id="userEmail">
+           usuario@email.com
+          </span>
+</div>
+</div>
+</li>
+<li>
+<hr class="dropdown-divider"/>
+</li>
+<li>
+<a class="dropdown-item" href="pages/perfil.html" title="Visualizar e editar seu perfil">
+<i class="bi bi-person-circle">
+</i>
+<div class="item-content">
+<span class="item-title" data-i18n="profile">
+           Perfil
+          </span>
+<span class="item-description" data-i18n="view_edit_profile">
+           Visualizar e editar suas informações
+          </span>
+</div>
+</a>
+</li>
+<li>
+<a class="dropdown-item" href="pages/configuracoes.html" title="Ajustar configurações do sistema">
+<i class="bi bi-gear">
+</i>
+<div class="item-content">
+<span class="item-title" data-i18n="settings">
+           Configurações
+          </span>
+<span class="item-description" data-i18n="customize_experience">
+           Personalizar sua experiência
+          </span>
+</div>
+</a>
+</li>
+<li>
+<hr class="dropdown-divider"/>
+</li>
+<li>
+<a class="dropdown-item logout-item" href="#" id="btnLogout" title="Sair do sistema">
+<i class="bi bi-box-arrow-right">
+</i>
+<div class="item-content">
+<span class="item-title" data-i18n="logout">
+           Sair
+          </span>
+<span class="item-description" data-i18n="end_session">
+           Encerrar sessão
+          </span>
+</div>
+</a>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</nav>
+<div class="container py-3 mt-4">
+<!-- Cabeçalho com Estatísticas -->
+<div class="row mb-3">
+<div class="col-12">
+<div class="d-flex justify-content-between align-items-center mb-2">
+<h2 class="mb-0">
+<i class="bi bi-gift">
+</i>
+       Controle de Doações
+      </h2>
+<button class="btn btn-primary" data-bs-target="#novaDoacaoModal" data-bs-toggle="modal">
+<i class="bi bi-plus-lg me-2">
+</i>
+       Nova Doação
+      </button>
+</div>
+</div>
+</div>
+<!-- Cards de Estatísticas -->
+<div class="row g-3 mb-4">
+<div class="col-md-3 col-sm-6">
+<div class="donation-card">
+<i class="bi bi-currency-dollar donation-icon">
+</i>
+<div class="donation-amount" id="totalMonetario">
+       R$ 0,00
+      </div>
+<div class="donation-description">
+       Total em Doações
+      </div>
+<div class="donation-progress">
+<div class="progress-bar">
+<div class="progress-fill" style="width: 75%">
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="col-md-3 col-sm-6">
+<div class="donation-card">
+<i class="bi bi-box-seam donation-icon">
+</i>
+<div class="donation-amount" id="totalMateriais">
+       0
+      </div>
+<div class="donation-description">
+       Itens Materiais
+      </div>
+<div class="donation-progress">
+<div class="progress-bar">
+<div class="progress-fill" style="width: 45%">
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="col-md-3 col-sm-6">
+<div class="donation-card">
+<i class="bi bi-basket donation-icon">
+</i>
+<div class="donation-amount" id="totalAlimentos">
+       0
+      </div>
+<div class="donation-description">
+       Alimentos
+      </div>
+<div class="donation-progress">
+<div class="progress-bar">
+<div class="progress-fill" style="width: 60%">
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="col-md-3 col-sm-6">
+<div class="donation-card">
+<i class="bi bi-people donation-icon">
+</i>
+<div class="donation-amount" id="totalDoadores">
+       0
+      </div>
+<div class="donation-description">
+       Doadores Ativos
+      </div>
+<div class="donation-progress">
+<div class="progress-bar">
+<div class="progress-fill" style="width: 30%">
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Barra de Busca e Filtros -->
+<div class="row mb-4">
+<div class="col-12">
+<div class="search-container">
+<div class="search-box">
+<i class="bi bi-search search-icon">
+</i>
+<input class="form-control search-input" id="searchInput" placeholder="Buscar doações por nome, tipo ou data..." type="text"/>
+<div class="search-actions">
+<button class="btn btn-link btn-search-clear d-none" id="clearSearch">
+<i class="bi bi-x-lg">
+</i>
+</button>
+<div class="search-divider">
+</div>
+<button class="btn btn-link btn-search-filter" data-bs-target="#searchFilters" data-bs-toggle="collapse">
+<i class="bi bi-sliders2">
+</i>
+</button>
+</div>
+</div>
+<!-- Filtros Rápidos Colapsáveis -->
+<div class="collapse" id="searchFilters">
+<div class="quick-filters mt-2">
+<div class="filter-chips">
+<button class="chip" data-type="monetaria">
+<i class="bi bi-currency-dollar">
+</i>
+          Monetárias
+         </button>
+<button class="chip" data-type="material">
+<i class="bi bi-box-seam">
+</i>
+          Materiais
+         </button>
+<button class="chip" data-type="alimentos">
+<i class="bi bi-basket">
+</i>
+          Alimentos
+         </button>
+<button class="chip" data-status="pendente">
+<i class="bi bi-clock">
+</i>
+          Pendentes
+         </button>
+</div>
+<div class="filter-date">
+<select class="form-select form-select-sm" id="quickFilterDate">
+<option value="all">
+           Qualquer data
+          </option>
+<option value="today">
+           Hoje
+          </option>
+<option value="week">
+           Esta semana
+          </option>
+<option value="month">
+           Este mês
+          </option>
+</select>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Lista de Doações -->
+<div class="row">
+<div class="col-12">
+<div class="table-responsive">
+<table class="table table-hover align-middle">
+<thead>
+<tr>
+<th style="width: 40px">
+</th>
+<th>
+          Data
+         </th>
+<th>
+          Doador
+         </th>
+<th>
+          Tipo
+         </th>
+<th>
+          Descrição
+         </th>
+<th>
+          Valor/Quantidade
+         </th>
+<th>
+          Status
+         </th>
+<th style="width: 100px">
+          Ações
+         </th>
+</tr>
+</thead>
+<tbody id="doacoesTableBody">
+</tbody>
+</table>
+</div>
+<div class="text-center py-5 d-none" id="emptyState">
+<i class="bi bi-inbox display-1 text-muted">
+</i>
+<h4 class="mt-3 text-muted">
+       Nenhuma doação encontrada
+      </h4>
+<p class="text-muted">
+       Clique em "Nova Doação" para começar
+      </p>
+<button class="btn btn-primary mt-3" data-bs-target="#novaDoacaoModal" data-bs-toggle="modal">
+<i class="bi bi-plus-lg me-2">
+</i>
+       Nova Doação
+      </button>
+</div>
+</div>
+</div>
+</div>
+<div class="modal fade" id="novaDoacaoModal" tabindex="-1">
+<div class="modal-dialog modal-lg">
+<div class="modal-content">
+<div class="modal-header">
+<h5 class="modal-title">
+<i class="bi bi-gift me-2">
+</i>
+       Registrar Nova Doação
+      </h5>
+<button class="btn-close" data-bs-dismiss="modal" type="button">
+</button>
+</div>
+<div class="modal-body">
+<div class="donation-tabs mb-4">
+<div class="donation-tab active" data-type="monetaria">
+<i class="bi bi-currency-dollar me-2">
+</i>
+        Monetária
+       </div>
+<div class="donation-tab" data-type="material">
+<i class="bi bi-box-seam me-2">
+</i>
+        Material
+       </div>
+<div class="donation-tab" data-type="alimentos">
+<i class="bi bi-basket me-2">
+</i>
+        Alimentos
+       </div>
+</div>
+<form class="needs-validation" id="novaDoacaoForm" novalidate="">
+<!-- Informações do Doador -->
+<div class="row g-3 mb-4">
+<div class="col-12">
+<h6 class="mb-3">
+          Informações do Doador
+         </h6>
+</div>
+<div class="col-md-6">
+<div class="donation-input-group">
+<i class="bi bi-person input-icon">
+</i>
+<input class="form-control" id="doadorNome" placeholder="Nome do doador" required="" type="text"/>
+</div>
+</div>
+<div class="col-md-6">
+<div class="donation-input-group">
+<i class="bi bi-envelope input-icon">
+</i>
+<input class="form-control" id="doadorEmail" placeholder="E-mail do doador" type="email"/>
+</div>
+</div>
+<div class="col-md-6">
+<div class="donation-input-group">
+<i class="bi bi-phone input-icon">
+</i>
+<input class="form-control" id="doadorTelefone" placeholder="Telefone" type="tel"/>
+</div>
+</div>
+<div class="col-md-6">
+<div class="donation-input-group">
+<i class="bi bi-geo-alt input-icon">
+</i>
+<input class="form-control" id="doadorCidade" placeholder="Cidade" type="text"/>
+</div>
+</div>
+</div>
+<!-- Detalhes da Doação -->
+<div class="row g-3">
+<div class="col-12">
+<h6 class="mb-3">
+          Detalhes da Doação
+         </h6>
+</div>
+<!-- Campos para Doação Monetária -->
+<div class="col-md-6 donation-type monetaria">
+<div class="donation-input-group">
+<i class="bi bi-currency-dollar input-icon">
+</i>
+<input class="form-control" id="valorMonetario" min="0" placeholder="Valor da doação" step="0.01" type="number"/>
+</div>
+</div>
+<!-- Campos para Doação Material/Alimentos -->
+<div class="col-md-6 donation-type material alimentos d-none">
+<div class="donation-input-group">
+<i class="bi bi-box input-icon">
+</i>
+<input class="form-control" id="quantidade" min="1" placeholder="Quantidade" type="number"/>
+</div>
+</div>
+<div class="col-md-6">
+<div class="donation-input-group">
+<i class="bi bi-calendar input-icon">
+</i>
+<input class="form-control" id="dataDoacao" required="" type="date"/>
+</div>
+</div>
+<div class="col-12">
+<div class="donation-input-group">
+<i class="bi bi-card-text input-icon">
+</i>
+<textarea class="form-control" id="descricaoDoacao" placeholder="Descrição detalhada da doação" rows="3"></textarea>
+</div>
+</div>
+<!-- Método de Pagamento (apenas para doação monetária) -->
+<div class="col-12 donation-type monetaria">
+<h6 class="mb-3">
+          Método de Pagamento
+         </h6>
+<div class="donation-methods">
+<div class="method-card" data-method="pix">
+<i class="bi bi-qr-code method-icon">
+</i>
+<div>
+            PIX
+           </div>
+</div>
+<div class="method-card" data-method="cartao">
+<i class="bi bi-credit-card method-icon">
+</i>
+<div>
+            Cartão
+           </div>
+</div>
+<div class="method-card" data-method="boleto">
+<i class="bi bi-upc method-icon">
+</i>
+<div>
+            Boleto
+           </div>
+</div>
+<div class="method-card" data-method="transferencia">
+<i class="bi bi-bank method-icon">
+</i>
+<div>
+            Transferência
+           </div>
+</div>
+</div>
+</div>
+</div>
+</form>
+</div>
+<div class="modal-footer">
+<button class="btn btn-outline-secondary" data-bs-dismiss="modal" type="button">
+<i class="bi bi-x-lg me-2">
+</i>
+       Cancelar
+      </button>
+<button class="btn btn-primary" form="novaDoacaoForm" type="submit">
+<i class="bi bi-check-lg me-2">
+</i>
+       Registrar Doação
+      </button>
+</div>
+<button class="btn-close" data-bs-dismiss="modal" type="button">
+</button>
+</div>
+<div class="modal-body">
+<form class="donation-form" id="doacaoForm">
+<h6 class="mb-3">
+       Informações do Doador
+      </h6>
+<div class="row g-3">
+<div class="col-md-6">
+<label class="form-label">
+         Nome do Doador
+        </label>
+<input class="form-control" id="doadorNome" required="" type="text"/>
+</div>
+<div class="col-md-6">
+<label class="form-label">
+         Email
+        </label>
+<input class="form-control" id="doadorEmail" type="email"/>
+</div>
+<div class="col-md-6">
+<label class="form-label">
+         Telefone
+        </label>
+<input class="form-control" id="doadorTelefone" type="tel"/>
+</div>
+<div class="col-md-6">
+<label class="form-label">
+         CPF/CNPJ
+        </label>
+<input class="form-control" id="doadorDocumento" type="text"/>
+</div>
+</div>
+<hr class="my-4"/>
+<h6 class="mb-3">
+       Informações da Doação
+      </h6>
+<div class="row g-3">
+<div class="col-md-6">
+<label class="form-label">
+         Tipo de Doação
+        </label>
+<select class="form-select" id="doacaoTipo" required="">
+<option value="">
+          Selecione...
+         </option>
+<option value="monetaria">
+          Monetária
+         </option>
+<option value="material">
+          Material
+         </option>
+<option value="alimentos">
+          Alimentos
+         </option>
+</select>
+</div>
+<div class="col-md-6" id="valorField">
+<label class="form-label">
+         Valor
+        </label>
+<div class="input-group">
+<span class="input-group-text">
+          R$
+         </span>
+<input class="form-control" id="doacaoValor" step="0.01" type="number"/>
+</div>
+</div>
+</div>
+<div id="itensContainer" style="display: none;">
+<div class="donation-items">
+<div id="itensList">
+<div class="item-row">
+<div class="flex-grow-1">
+<label class="form-label">
+            Item
+           </label>
+<input class="form-control item-nome" required="" type="text"/>
+</div>
+<div style="width: 150px;">
+<label class="form-label">
+            Quantidade
+           </label>
+<input class="form-control item-quantidade" min="1" required="" type="number"/>
+</div>
+<div class="d-flex align-items-end" style="width: 40px;">
+<i class="bi bi-trash remove-item">
+</i>
+</div>
+</div>
+</div>
+<button class="btn btn-outline-secondary mt-3" id="addItem" type="button">
+<i class="bi bi-plus-lg">
+</i>
+         Adicionar Item
+        </button>
+</div>
+</div>
+<div class="row g-3 mt-3">
+<div class="col-12">
+<label class="form-label">
+         Observações
+        </label>
+<textarea class="form-control" id="doacaoObs" rows="3"></textarea>
+</div>
+</div>
+</form>
+</div>
+<div class="modal-footer">
+<button class="btn btn-outline-secondary" data-bs-dismiss="modal" type="button">
+      Cancelar
+     </button>
+<button class="btn btn-purple" id="salvarDoacao" type="button">
+<i class="bi bi-check-lg">
+</i>
+      Salvar Doação
+     </button>
+</div>
+</div>
+</div>
+<div style="margin-top: 1rem;">
+<a href="pages/menu.html">
+<button>
+     Voltar ao Início
+    </button>
+</a>
+</div>
+<script src="../utils/default.js">
+</script>
+<!-- Settings Manager -->
+<script src="../js/settings-manager.js">
+</script>
+<script src="../js/doacoes.js">
+</script>
+<script>
+   document.addEventListener("DOMContentLoaded", () => {
+  const tbody = document.getElementById("doacoesTableBody");
+  const dados = carregarLocal("simulacaoDoacoes") || [];
+
+  if (tbody && dados.length > 0) {
+    tbody.innerHTML = "";
+    dados.forEach((doacao) => {
+      const row = document.createElement("tr");
+      row.innerHTML = `
+        <td>${doacao.tipo}</td>
+        <td>${doacao.descricao}</td>
+        <td>${doacao.data}</td>
+        <td>${doacao.valor.toFixed(2)}</td>
+        <td>${doacao.status}</td>
+      `;
+      tbody.appendChild(row);
+    });
+  }
+});
+  </script>
+<script>
+   document.addEventListener('DOMContentLoaded', () => {
+    const html = document.documentElement;
+    const body = document.body;
+    const fonte = localStorage.getItem('preferenciaFonte');
+    const tema = localStorage.getItem('preferenciaTema');
+    const leitura = localStorage.getItem('preferenciaLeitura');
+
+    if (tema === 'escuro') html.classList.add('dark-mode');
+    else html.classList.remove('dark-mode');
+
+    if (leitura === 'ativado') html.classList.add('modo-leitura');
+    else html.classList.remove('modo-leitura');
+
+    if (fonte) {
+      html.style.setProperty('--tamanho-fonte', fonte);
+    }
+  });
+  </script>
+
+<div class="assistente" id="assistente-virtual">
+<input id="chat-input" placeholder="Digite sua pergunta..." type="text"/>
+<button id="enviar-chat">Enviar</button>
+</div>
+</body>
+</html>

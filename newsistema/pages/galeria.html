@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>
+   Galeria de Fotos - ONG Novo Amanhã
+  </title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="../css/config-styles.css" rel="stylesheet"/>
+<link href="../css/global.css" rel="stylesheet"/>
+<link href="../css/navbar.css" rel="stylesheet"/>
+<link href="../css/cards.css" rel="stylesheet"/>
+<link href="../css/background-pattern.css" rel="stylesheet"/>
+<link href="../css/themes.css" rel="stylesheet"/>
+<link href="../css/galeria.css" rel="stylesheet"/>
+<script src="../js/auth-guard.js" type="module">
+</script>
+<script src="../js/permissoes.js" type="module">
+</script>
+<script src="../js/preferencias.js" type="module">
+</script>
+<script src="../js/preferencia-aplicacao.js" type="module">
+</script>
+</head>
+<body class="min-vh-100 d-flex flex-column"><i class="fa fa-bell" id="notificacoes"></i>
+<h1>
+   Galeria
+  </h1>
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark fixed-top shadow" style="background-color: var(--primary-color);">
+<div class="container-fluid">
+<a class="navbar-brand" href="#" style="display: flex; align-items: center; gap: 10px;">
+<i class="bi bi-box-seam">
+</i>
+<span class="h5 mb-0" data-i18n="platform_name">
+      Beta - Plataforma de Gestão
+     </span>
+</a>
+<div class="d-flex align-items-center">
+<a class="btn btn-outline-light me-3" href="pages/menu.html">
+<i class="bi bi-house-door">
+</i>
+      Início
+     </a>
+<div class="dropdown">
+<div aria-expanded="false" class="user-profile" data-bs-toggle="dropdown" id="userProfileDropdown">
+<div class="avatar" id="userAvatar">
+        UT
+       </div>
+<div class="user-info">
+<span class="user-name" data-i18n="user_name" id="userName">
+         Usuário
+        </span>
+<i class="bi bi-chevron-down dropdown-arrow">
+</i>
+</div>
+</div>
+<ul aria-labelledby="userProfileDropdown" class="dropdown-menu dropdown-menu-end">
+<li>
+<div class="dropdown-header">
+<div class="avatar-small" id="userAvatarSmall">
+          UT
+         </div>
+<div class="header-info">
+<span class="header-name" data-i18n="user_full_name" id="userNameFull">
+           Usuário
+          </span>
+<span class="header-email" data-i18n="user_email" id="userEmail">
+           usuario@email.com
+          </span>
+</div>
+</div>
+</li>
+<li>
+<hr class="dropdown-divider"/>
+</li>
+<li>
+<a class="dropdown-item" href="pages/perfil.html" title="Visualizar e editar seu perfil">
+<i class="bi bi-person-circle">
+</i>
+<div class="item-content">
+<span class="item-title" data-i18n="profile">
+           Perfil
+          </span>
+<span class="item-description" data-i18n="view_edit_profile">
+           Visualizar e editar suas informações
+          </span>
+</div>
+</a>
+</li>
+<li>
+<a class="dropdown-item" href="pages/configuracoes.html" title="Ajustar configurações do sistema">
+<i class="bi bi-gear">
+</i>
+<div class="item-content">
+<span class="item-title" data-i18n="settings">
+           Configurações
+          </span>
+<span class="item-description" data-i18n="customize_experience">
+           Personalizar sua experiência
+          </span>
+</div>
+</a>
+</li>
+<li>
+<hr class="dropdown-divider"/>
+</li>
+<li>
+<a class="dropdown-item logout-item" href="#" id="btnLogout" title="Sair do sistema">
+<i class="bi bi-box-arrow-right">
+</i>
+<div class="item-content">
+<span class="item-title" data-i18n="logout">
+           Sair
+          </span>
+<span class="item-description" data-i18n="end_session">
+           Encerrar sessão
+          </span>
+</div>
+</a>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</nav>
+<div class="container-fluid py-5 mt-5">
+<div class="gallery-container">
+<div class="gallery-header mb-4">
+<div class="d-flex justify-content-between align-items-start">
+<div>
+<h2>
+<i class="bi bi-images me-2">
+</i>
+        Galeria de Fotos
+       </h2>
+<div class="gallery-stats">
+<div class="stat-item">
+<i class="bi bi-folder2">
+</i>
+<span id="totalAlbums">
+          0 álbuns
+         </span>
+</div>
+<div class="stat-item">
+<i class="bi bi-image">
+</i>
+<span id="totalFotos">
+          0 fotos
+         </span>
+</div>
+<div class="stat-item">
+<i class="bi bi-calendar3">
+</i>
+<span id="ultimaAtualizacao">
+          Nenhuma atualização
+         </span>
+</div>
+</div>
+</div>
+<button class="btn btn-purple" id="btnCriarAlbum">
+<i class="bi bi-folder-plus">
+</i>
+       Criar Álbum
+      </button>
+</div>
+</div>
+<div id="albumsContainer">
+<!-- Os álbuns serão renderizados aqui -->
+</div>
+</div>
+</div>
+<!-- Modal Novo Álbum -->
+<div class="modal fade" id="novoAlbumModal" tabindex="-1">
+<div class="modal-dialog">
+<div class="modal-content">
+<div class="modal-header">
+<h5 class="modal-title">
+<i class="bi bi-folder-plus me-2">
+</i>
+       Criar Novo Álbum
+      </h5>
+<button class="btn-close" data-bs-dismiss="modal" type="button">
+</button>
+</div>
+<div class="modal-body">
+<div class="mb-3">
+<label class="form-label" for="nomeAlbum">
+        Nome do Álbum
+       </label>
+<input class="form-control" id="nomeAlbum" placeholder="Digite o nome do álbum" type="text"/>
+</div>
+</div>
+<div class="modal-footer">
+<button class="btn btn-outline-secondary" data-bs-dismiss="modal" type="button">
+       Cancelar
+      </button>
+<button class="btn btn-purple" id="salvarAlbum" type="button">
+<i class="bi bi-check-lg me-2">
+</i>
+       Criar Álbum
+      </button>
+</div>
+</div>
+</div>
+</div>
+<!-- Modal Álbum -->
+<div class="modal fade" id="albumModal" tabindex="-1">
+<div class="modal-dialog modal-lg modal-dialog-scrollable">
+<div class="modal-content">
+<!-- Conteúdo será preenchido dinamicamente -->
+</div>
+</div>
+</div>
+<!-- Modal Foto -->
+<div class="modal fade" id="fotoModal" tabindex="-1">
+<div class="modal-dialog modal-lg">
+<div class="modal-content">
+<!-- Conteúdo será preenchido dinamicamente -->
+</div>
+</div>
+</div>
+<script src="../libs/bootstrap.bundle.min.js">
+</script>
+<script src="../js/galeria.js" type="module">
+</script>
+<script src="../js/settings-manager.js">
+</script>
+<script>
+   document.addEventListener("DOMContentLoaded", function () {
+  const savedTheme = localStorage.getItem("modo-escuro");
+  if (savedTheme === "ativado") {
+    document.body.classList.add("modo-escuro");
+  }
+
+  const toggle = document.getElementById("toggle-modo-escuro");
+  if (toggle) {
+    toggle.addEventListener("click", () => {
+      document.body.classList.toggle("modo-escuro");
+      const ativado = document.body.classList.contains("modo-escuro");
+      localStorage.setItem("modo-escuro", ativado ? "ativado" : "desativado");
+    });
+  }
+});
+  </script>
+<!-- Assistente Beta fixa -->
+<div id="beta-button" style="position:fixed;bottom:20px;right:20px;z-index:99999;background:#7a00cc;color:#fff;border:none;border-radius:50%;width:60px;height:60px;display:flex;align-items:center;justify-content:center;box-shadow:0 0 10px rgba(0,0,0,0.3);cursor:pointer;font-size:28px;">
+   🤖
+  </div>
+<div id="beta-drawer" style="position:fixed;top:0;right:-400px;width:350px;max-width:100%;height:100vh;background:white;box-shadow:-2px 0 10px rgba(0,0,0,0.2);transition:right 0.3s ease-in-out;z-index:99998;padding:20px;overflow-y:auto;">
+<button id="beta-close" style="float:right;font-size:20px;border:none;background:none;cursor:pointer;">
+    ✖
+   </button>
+<h2>
+    Beta
+   </h2>
+<p>
+    Olá! Eu sou a assistente virtual da plataforma. Como posso ajudar?
+   </p>
+<input placeholder="Digite sua dúvida..." style="width:100%;padding:10px;margin-top:15px;border-radius:8px;border:1px solid #ccc;" type="text"/>
+</div>
+<script>
+   document.addEventListener("DOMContentLoaded", () => {
+  const betaButton = document.getElementById("beta-button");
+  const betaDrawer = document.getElementById("beta-drawer");
+  const betaClose = document.getElementById("beta-close");
+
+  if (betaButton && betaDrawer) {
+    betaButton.addEventListener("click", () => {
+      betaDrawer.style.right = "0";
+    });
+  }
+
+  if (betaClose && betaDrawer) {
+    betaClose.addEventListener("click", () => {
+      betaDrawer.style.right = "-400px";
+    });
+  }
+
+  document.addEventListener("click", (e) => {
+    if (
+      betaDrawer &&
+      !betaDrawer.contains(e.target) &&
+      !betaButton.contains(e.target)
+    ) {
+      betaDrawer.style.right = "-400px";
+    }
+  });
+});
+  </script>
+<script>
+   document.addEventListener('DOMContentLoaded', () => {
+    const html = document.documentElement;
+    const body = document.body;
+    const fonte = localStorage.getItem('preferenciaFonte');
+    const tema = localStorage.getItem('preferenciaTema');
+    const leitura = localStorage.getItem('preferenciaLeitura');
+
+    if (tema === 'escuro') html.classList.add('dark-mode');
+    else html.classList.remove('dark-mode');
+
+    if (leitura === 'ativado') html.classList.add('modo-leitura');
+    else html.classList.remove('modo-leitura');
+
+    if (fonte) {
+      html.style.setProperty('--tamanho-fonte', fonte);
+    }
+  });
+  </script>
+
+<div class="assistente" id="assistente-virtual">
+<input id="chat-input" placeholder="Digite sua pergunta..." type="text"/>
+<button id="enviar-chat">Enviar</button>
+</div>
+<button id="btn-add-album">Adicionar Álbum</button></body>
+</html>

@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>
+   Configurações - ONG Novo Amanhã
+  </title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="../css/config-styles.css" rel="stylesheet"/>
+<link href="../css/global.css" rel="stylesheet"/>
+<link href="../css/navbar.css" rel="stylesheet"/>
+<link href="../css/cards.css" rel="stylesheet"/>
+<link href="../css/background-pattern.css" rel="stylesheet"/>
+<link href="../css/themes.css" rel="stylesheet"/>
+<link href="../css/configuracoes.css" rel="stylesheet"/>
+<script src="../js/auth-guard.js" type="module">
+</script>
+<script src="../js/permissoes.js" type="module">
+</script>
+<script src="../js/preferencias.js" type="module">
+</script>
+<script src="../js/preferencia-aplicacao.js" type="module">
+</script>
+</head>
+<body class="tema-padrao"><i class="fa fa-bell" id="notificacoes"></i>
+<h1>
+   Configuracoes
+  </h1>
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark fixed-top shadow" style="background-color: var(--primary-color);">
+<div class="container-fluid">
+<a class="navbar-brand" href="#" style="display: flex; align-items: center; gap: 10px;">
+<i class="bi bi-box-seam">
+</i>
+<span class="h5 mb-0" data-i18n="platform_name">
+      Beta - Plataforma de Gestão
+     </span>
+</a>
+<div class="d-flex align-items-center">
+<a class="btn btn-outline-light me-3" href="pages/menu.html">
+<i class="bi bi-house-door">
+</i>
+      Início
+     </a>
+<div class="dropdown">
+<div aria-expanded="false" class="user-profile" data-bs-toggle="dropdown" id="userProfileDropdown">
+<div class="avatar" id="userAvatar">
+        UT
+       </div>
+<div class="user-info">
+<span class="user-name" data-i18n="user_name" id="userName">
+         Usuário
+        </span>
+<i class="bi bi-chevron-down dropdown-arrow">
+</i>
+</div>
+</div>
+<ul aria-labelledby="userProfileDropdown" class="dropdown-menu dropdown-menu-end">
+<li>
+<div class="dropdown-header">
+<div class="avatar-small" id="userAvatarSmall">
+          UT
+         </div>
+<div class="header-info">
+<span class="header-name" data-i18n="user_full_name" id="userNameFull">
+           Usuário
+          </span>
+<span class="header-email" data-i18n="user_email" id="userEmail">
+           usuario@email.com
+          </span>
+</div>
+</div>
+</li>
+<li>
+<hr class="dropdown-divider"/>
+</li>
+<li>
+<a class="dropdown-item" href="pages/perfil.html">
+<i class="bi bi-person me-2">
+</i>
+<span data-i18n="profile">
+          Perfil
+         </span>
+</a>
+</li>
+<li>
+<a class="dropdown-item active" href="pages/configuracoes.html">
+<i class="bi bi-gear me-2">
+</i>
+<span data-i18n="settings">
+          Configurações
+         </span>
+</a>
+</li>
+<li>
+<a class="dropdown-item" href="guia.html">
+<i class="bi bi-question-circle me-2">
+</i>
+<span data-i18n="help">
+          Ajuda
+         </span>
+</a>
+</li>
+<li>
+<hr class="dropdown-divider"/>
+</li>
+<li>
+<a class="dropdown-item text-danger logout-item" href="#" id="btnLogout" title="Sair do sistema">
+<i class="bi bi-box-arrow-right me-2">
+</i>
+<span data-i18n="logout">
+          Sair
+         </span>
+</a>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</nav>
+<div class="container py-4">
+<div class="settings-section">
+<div class="settings-header">
+<h2 class="settings-title">
+<i class="bi bi-gear-fill me-2">
+</i>
+      Configurações do Sistema
+     </h2>
+<p class="settings-description">
+      Personalize sua experiência na plataforma de acordo com suas preferências.
+     </p>
+</div>
+<!-- Tema do sistema -->
+<div class="config-card">
+<div class="config-title">
+<i class="bi bi-palette">
+</i>
+      Tema do sistema
+     </div>
+<div class="config-description">
+      Escolha a aparência da plataforma que mais combina com você.
+     </div>
+<select class="form-select w-auto" id="temaSelecionado">
+<option value="tema-padrao">
+       Padrão
+      </option>
+<option value="tema-claro">
+       Lilás Claro
+      </option>
+<option value="tema-vibrante">
+       Roxo Vibrante
+      </option>
+</select>
+</div>
+<!-- Modo Escuro -->
+<div class="config-card">
+<div class="config-title">
+<i class="bi bi-moon-stars">
+</i>
+      Modo Escuro
+     </div>
+<div class="config-description">
+      Ative para reduzir o brilho da tela em ambientes com pouca luz.
+     </div>
+<div class="form-check form-switch">
+<input class="form-check-input" id="modoEscuroToggle" type="checkbox"/>
+<label class="form-check-label" for="modoEscuroToggle">
+       Ativar Modo Escuro
+      </label>
+</div>
+</div>
+<!-- Modo Leitura -->
+<div class="config-card">
+<div class="config-title">
+<i class="bi bi-book">
+</i>
+      Modo Leitura
+     </div>
+<div class="config-description">
+      Remove elementos visuais e menus para focar só no conteúdo.
+     </div>
+<div class="form-check form-switch">
+<input class="form-check-input" id="modoLeituraToggle" type="checkbox"/>
+<label class="form-check-label" for="modoLeituraToggle">
+       Ativar Modo Leitura
+      </label>
+</div>
+</div>
+<!-- Tamanho da Fonte -->
+<div class="config-card">
+<div class="config-title">
+<i class="bi bi-type">
+</i>
+      Tamanho da Fonte
+     </div>
+<div class="config-description">
+      Ajuste o tamanho dos textos para melhor leitura.
+     </div>
+<select class="form-select w-auto" id="fonteSelecionada">
+<option value="normal">
+       Padrão
+      </option>
+<option value="grande">
+       Grande
+      </option>
+<option value="extra">
+       Extra Grande
+      </option>
+</select>
+</div>
+<!-- Contraste Alto -->
+<div class="config-card">
+<div class="config-title">
+<i class="bi bi-circle-half">
+</i>
+      Contraste Alto
+     </div>
+<div class="config-description">
+      Melhora a visibilidade com cores mais contrastantes.
+     </div>
+<div class="form-check form-switch">
+<input class="form-check-input" id="contrasteToggle" type="checkbox"/>
+<label class="form-check-label" for="contrasteToggle">
+       Ativar Contraste Alto
+      </label>
+</div>
+</div>
+</div>
+<!-- Seção de Segurança -->
+<div class="settings-section">
+<div class="settings-header">
+<h2 class="settings-title">
+<i class="bi bi-shield-lock-fill me-2">
+</i>
+      Segurança
+     </h2>
+<p class="settings-description">
+      Gerencie suas sessões e preferências de segurança.
+     </p>
+</div>
+<!-- Encerrar todas as sessões -->
+<div class="config-card">
+<div class="config-title">
+<i class="bi bi-box-arrow-right">
+</i>
+      Encerrar todas as sessões
+     </div>
+<div class="config-description">
+      Desconecte-se de todos os dispositivos onde você está logado.
+     </div>
+<button class="btn btn-danger" id="encerrarSessoes">
+<i class="bi bi-power me-2">
+</i>
+      Encerrar Todas as Sessões
+     </button>
+</div>
+</div>
+</div>
+<!-- Bootstrap JS Bundle -->
+<script src="../libs/bootstrap.bundle.min.js">
+</script>
+<!-- Firebase Module -->
+<!-- Translations -->
+<script src="../js/translations.js">
+</script>
+<!-- Settings Manager -->
+<script src="../js/settings-manager.js">
+</script>
+<!-- Session Timeout -->
+<script src="../js/session-timeout.js">
+</script>
+<!-- Main Script -->
+<script>
+   // Event Listeners para configurações
+    document.getElementById("temaSelecionado").addEventListener("change", function() {
+      settingsManager.setTheme(this.value);
+    });
+
+    document.getElementById("modoEscuroToggle").addEventListener("change", function() {
+      settingsManager.setDarkMode(this.checked);
+    });
+
+    document.getElementById("modoLeituraToggle").addEventListener("change", function() {
+      settingsManager.setReadingMode(this.checked);
+    });
+
+    document.getElementById("fonteSelecionada").addEventListener("change", function() {
+      settingsManager.setFontSize(this.value);
+    });
+
+    document.getElementById("contrasteToggle").addEventListener("change", function() {
+      settingsManager.setHighContrast(this.checked);
+    });
+
+    // Função de logout
+    async function handleLogout() {
+      try {
+        await firebase.auth().signOut();
+        window.location.href = '../index.html';
+      } catch (error) {
+        console.error('Erro ao fazer logout:', error);
+        alert('Erro ao fazer logout. Tente novamente.');
+      }
+    }
+
+    // Event listener para o botão de logout na navbar
+    document.getElementById('btnLogout').addEventListener('click', handleLogout);
+
+    // Event listener para o botão de encerrar todas as sessões
+    document.getElementById("encerrarSessoes").addEventListener("click", async function() {
+      if (confirm("Tem certeza que deseja encerrar todas as sessões?")) {
+        try {
+          await firebase.auth().signOut();
+          localStorage.clear(); // Limpa todas as configurações locais
+          window.location.href = '../index.html';
+        } catch (error) {
+          console.error('Erro ao encerrar sessões:', error);
+          alert('Erro ao encerrar sessões. Tente novamente.');
+        }
+      }
+    });
+
+    // Carregar configurações ao iniciar
+    document.addEventListener('DOMContentLoaded', carregarConfiguracoes);
+
+    // Atualizar configurações quando alteradas em outras abas
+    window.addEventListener('storage', function(e) {
+      if (e.key && e.key.startsWith('tema') || e.key.startsWith('modo')) {
+        carregarConfiguracoes();
+      }
+    });
+  </script>
+<script>
+   document.addEventListener("DOMContentLoaded", function () {
+  const savedTheme = localStorage.getItem("modo-escuro");
+  if (savedTheme === "ativado") {
+    document.body.classList.add("modo-escuro");
+  }
+
+  const toggle = document.getElementById("toggle-modo-escuro");
+  if (toggle) {
+    toggle.addEventListener("click", () => {
+      document.body.classList.toggle("modo-escuro");
+      const ativado = document.body.classList.contains("modo-escuro");
+      localStorage.setItem("modo-escuro", ativado ? "ativado" : "desativado");
+    });
+  }
+});
+  </script>
+<!-- Assistente Beta fixa -->
+<div id="beta-button" style="position:fixed;bottom:20px;right:20px;z-index:99999;background:#7a00cc;color:#fff;border:none;border-radius:50%;width:60px;height:60px;display:flex;align-items:center;justify-content:center;box-shadow:0 0 10px rgba(0,0,0,0.3);cursor:pointer;font-size:28px;">
+   🤖
+  </div>
+<div id="beta-drawer" style="position:fixed;top:0;right:-400px;width:350px;max-width:100%;height:100vh;background:white;box-shadow:-2px 0 10px rgba(0,0,0,0.2);transition:right 0.3s ease-in-out;z-index:99998;padding:20px;overflow-y:auto;">
+<button id="beta-close" style="float:right;font-size:20px;border:none;background:none;cursor:pointer;">
+    ✖
+   </button>
+<h2>
+    Beta
+   </h2>
+<p>
+    Olá! Eu sou a assistente virtual da plataforma. Como posso ajudar?
+   </p>
+<input placeholder="Digite sua dúvida..." style="width:100%;padding:10px;margin-top:15px;border-radius:8px;border:1px solid #ccc;" type="text"/>
+</div>
+<script>
+   document.addEventListener("DOMContentLoaded", () => {
+  const betaButton = document.getElementById("beta-button");
+  const betaDrawer = document.getElementById("beta-drawer");
+  const betaClose = document.getElementById("beta-close");
+
+  if (betaButton && betaDrawer) {
+    betaButton.addEventListener("click", () => {
+      betaDrawer.style.right = "0";
+    });
+  }
+
+  if (betaClose && betaDrawer) {
+    betaClose.addEventListener("click", () => {
+      betaDrawer.style.right = "-400px";
+    });
+  }
+
+  document.addEventListener("click", (e) => {
+    if (
+      betaDrawer &&
+      !betaDrawer.contains(e.target) &&
+      !betaButton.contains(e.target)
+    ) {
+      betaDrawer.style.right = "-400px";
+    }
+  });
+});
+  </script>
+<script>
+   document.addEventListener('DOMContentLoaded', () => {
+    const html = document.documentElement;
+    const body = document.body;
+    const fonte = localStorage.getItem('preferenciaFonte');
+    const tema = localStorage.getItem('preferenciaTema');
+    const leitura = localStorage.getItem('preferenciaLeitura');
+
+    if (tema === 'escuro') html.classList.add('dark-mode');
+    else html.classList.remove('dark-mode');
+
+    if (leitura === 'ativado') html.classList.add('modo-leitura');
+    else html.classList.remove('modo-leitura');
+
+    if (fonte) {
+      html.style.setProperty('--tamanho-fonte', fonte);
+    }
+  });
+  </script>
+
+<div class="assistente" id="assistente-virtual">
+<input id="chat-input" placeholder="Digite sua pergunta..." type="text"/>
+<button id="enviar-chat">Enviar</button>
+</div>
+</body>
+</html>

@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+
+<html lang="pt-br">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<title>Dashboard - ONG Novo Amanhã</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="../css/config-styles.css" rel="stylesheet"/>
+<link href="../css/global.css" rel="stylesheet"/>
+<link href="../css/navbar.css" rel="stylesheet"/>
+<link href="../css/cards.css" rel="stylesheet"/>
+<link href="../css/background-pattern.css" rel="stylesheet"/>
+<link href="../css/themes.css" rel="stylesheet"/>
+<link href="../css/dashboard.css" rel="stylesheet"/>
+<link href="../css/dashboard-cards.css" rel="stylesheet"/>
+<script src="../libs/react.production.min.js"></script>
+<script src="../libs/react-dom.production.min.js"></script>
+<script src="../libs/Recharts.js"></script>
+<script src="../js/auth-guard.js" type="module"></script>
+<script src="../js/permissoes.js" type="module"></script>
+<script src="../js/preferencias.js" type="module"></script>
+<script src="../js/preferencia-aplicacao.js" type="module"></script>
+</head>
+<body class=""><i class="fa fa-bell" id="notificacoes"></i>
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark fixed-top shadow" style="background-color: var(--primary-color);">
+<div class="container-fluid">
+<a class="navbar-brand" href="#" style="display: flex; align-items: center; gap: 10px;">
+<i class="bi bi-box-seam"></i>
+<span class="h5 mb-0" data-i18n="platform_name">Beta - Plataforma de Gestão</span>
+</a>
+<div class="d-flex align-items-center">
+<a class="btn btn-outline-light me-3" href="pages/menu.html">
+<i class="bi bi-house-door"></i>
+                    Início
+                </a>
+<div class="dropdown">
+<div aria-expanded="false" class="user-profile" data-bs-toggle="dropdown" id="userProfileDropdown">
+<div class="avatar" id="userAvatar">UT</div>
+<div class="user-info">
+<span class="user-name" data-i18n="user_name" id="userName">Usuário</span>
+<i class="bi bi-chevron-down dropdown-arrow"></i>
+</div>
+</div>
+<ul aria-labelledby="userProfileDropdown" class="dropdown-menu dropdown-menu-end">
+<li>
+<div class="dropdown-header">
+<div class="avatar-small" id="userAvatarSmall">UT</div>
+<div class="header-info">
+<span class="header-name" data-i18n="user_full_name" id="userNameFull">Usuário</span>
+<span class="header-email" data-i18n="user_email" id="userEmail">usuario@email.com</span>
+</div>
+</div>
+</li>
+<li><hr class="dropdown-divider"/></li>
+<li>
+<a class="dropdown-item" href="pages/perfil.html" title="Visualizar e editar seu perfil">
+<i class="bi bi-person-circle"></i>
+<div class="item-content">
+<span class="item-title" data-i18n="profile">Perfil</span>
+<span class="item-description" data-i18n="view_edit_profile">Visualizar e editar suas informações</span>
+</div>
+</a>
+</li>
+<li>
+<a class="dropdown-item" href="pages/configuracoes.html" title="Ajustar configurações do sistema">
+<i class="bi bi-gear"></i>
+<div class="item-content">
+<span class="item-title" data-i18n="settings">Configurações</span>
+<span class="item-description" data-i18n="customize_experience">Personalizar sua experiência</span>
+</div>
+</a>
+</li>
+<li><hr class="dropdown-divider"/></li>
+<li>
+<a class="dropdown-item logout-item" href="#" id="btnLogout" title="Sair do sistema">
+<i class="bi bi-box-arrow-right"></i>
+<div class="item-content">
+<span class="item-title" data-i18n="logout">Sair</span>
+<span class="item-description" data-i18n="end_session">Encerrar sessão</span>
+</div>
+</a>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</nav>
+<div class="container py-5 mt-5">
+<h1 class="mb-4">Dashboard</h1>
+<!-- Menu de Cards -->
+<div class="row row-cols-1 row-cols-md-3 g-4 mb-4">
+<!-- Card Alunos -->
+<div class="col">
+<div class="card h-100 dashboard-card" onclick="mostrarSecao('alunos')">
+<div class="card-body text-center">
+<div class="icon-container mb-3">
+<i class="bi bi-people fs-1"></i>
+</div>
+<h3 class="card-title">Alunos</h3>
+<p class="card-text">Gerenciar alunos e visualizar relatórios</p>
+</div>
+</div>
+</div>
+<!-- Card Doações -->
+<div class="col">
+<div class="card h-100 dashboard-card" onclick="mostrarSecao('doacoes')">
+<div class="card-body text-center">
+<div class="icon-container mb-3">
+<i class="bi bi-box2-heart fs-1"></i>
+</div>
+<h3 class="card-title">Doações</h3>
+<p class="card-text">Acompanhar doações e relatórios financeiros</p>
+</div>
+</div>
+</div>
+<!-- Card Logs -->
+<div class="col">
+<div class="card h-100 dashboard-card" onclick="mostrarSecao('logs')">
+<div class="card-body text-center">
+<div class="icon-container mb-3">
+<i class="bi bi-clock-history fs-1"></i>
+</div>
+<h3 class="card-title">Logs</h3>
+<p class="card-text">Visualizar histórico de atividades</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Seções de Dashboard -->
+<div id="dashboardSections">
+<!-- Seção de Alunos -->
+<div class="dashboard-section" id="alunosSection" style="display: none;">
+<div class="section-header">
+<h2><i class="bi bi-people"></i> Dashboard de Alunos</h2>
+<div class="section-controls">
+<div class="filter-group">
+<select class="form-select" id="periodoAlunosFilter">
+<option value="mes">Último Mês</option>
+<option value="trimestre">Último Trimestre</option>
+<option value="ano">Último Ano</option>
+</select>
+<input class="form-control" id="pesquisaAlunos" placeholder="Pesquisar alunos..." type="text"/>
+</div>
+<div class="layout-controls">
+<button class="btn btn-outline-primary" onclick="toggleGrafico('alunosAtivosChart')"><i class="bi bi-graph-up"></i></button>
+<button class="btn btn-outline-primary" onclick="toggleGrafico('presencaAlunosChart')"><i class="bi bi-pie-chart"></i></button>
+<button class="btn btn-outline-primary" onclick="toggleGrafico('frequenciaAlunosChart')"><i class="bi bi-calendar-check"></i></button>
+</div>
+</div>
+</div>
+<div class="section-content">
+<div class="kpi-container">
+<div class="kpi-card">
+<i class="bi bi-person-check"></i>
+<h3>Total de Alunos</h3>
+<p id="totalAlunos">0</p>
+</div>
+<div class="kpi-card">
+<i class="bi bi-calendar-event"></i>
+<h3>Presença Média</h3>
+<p id="presencaMedia">0%</p>
+</div>
+<div class="kpi-card">
+<i class="bi bi-award"></i>
+<h3>Oficinas Ativas</h3>
+<p id="oficinasAtivas">0</p>
+</div>
+</div>
+<div class="charts-grid">
+<div class="chart-container" id="alunosAtivosChart"></div>
+<div class="chart-container" id="presencaAlunosChart"></div>
+<div class="chart-container" id="frequenciaAlunosChart"></div>
+</div>
+<div class="action-buttons">
+<button class="btn btn-primary" onclick="verRelatorio('alunos')"><i class="bi bi-file-text"></i> Ver Relatório</button>
+<div class="dropdown">
+<button class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" type="button">
+<i class="bi bi-download"></i> Exportar
+                            </button>
+<ul class="dropdown-menu">
+<li><a class="dropdown-item" onclick="exportarRelatorio('alunos', 'pdf')">PDF</a></li>
+<li><a class="dropdown-item" onclick="exportarRelatorio('alunos', 'excel')">Excel</a></li>
+</ul>
+</div>
+<button class="btn btn-success" onclick="iniciarApresentacao('alunos')"><i class="bi bi-play-circle"></i> Modo Apresentação</button>
+</div>
+</div>
+</div>
+<!-- Seção de Doações -->
+<div class="dashboard-section" id="doacoesSection" style="display: none;">
+<div class="section-header">
+<h2><i class="bi bi-box2-heart"></i> Dashboard de Doações</h2>
+<div class="section-controls">
+<div class="filter-group">
+<select class="form-select" id="periodoDoacoesFilter">
+<option value="mes">Último Mês</option>
+<option value="trimestre">Último Trimestre</option>
+<option value="ano">Último Ano</option>
+</select>
+<input class="form-control" id="pesquisaDoacoes" placeholder="Pesquisar doações..." type="text"/>
+</div>
+<div class="layout-controls">
+<button class="btn btn-outline-primary" onclick="toggleGrafico('doacoesMensaisChart')"><i class="bi bi-graph-up"></i></button>
+<button class="btn btn-outline-primary" onclick="toggleGrafico('tiposDoacoesChart')"><i class="bi bi-pie-chart"></i></button>
+<button class="btn btn-outline-primary" onclick="toggleGrafico('doadoresChart')"><i class="bi bi-people"></i></button>
+</div>
+</div>
+</div>
+<div class="section-content">
+<div class="kpi-container">
+<div class="kpi-card">
+<i class="bi bi-cash"></i>
+<h3>Total Doações</h3>
+<p id="totalDoacoes">R$ 0</p>
+</div>
+<div class="kpi-card">
+<i class="bi bi-people"></i>
+<h3>Total Doadores</h3>
+<p id="totalDoadores">0</p>
+</div>
+<div class="kpi-card">
+<i class="bi bi-arrow-repeat"></i>
+<h3>Doadores Recorrentes</h3>
+<p id="doadoresRecorrentes">0</p>
+</div>
+</div>
+<div class="charts-grid">
+<div class="chart-container" id="doacoesMensaisChart"></div>
+<div class="chart-container" id="tiposDoacoesChart"></div>
+<div class="chart-container" id="doadoresChart"></div>
+</div>
+<div class="action-buttons">
+<button class="btn btn-primary" onclick="verRelatorio('doacoes')"><i class="bi bi-file-text"></i> Ver Relatório</button>
+<div class="dropdown">
+<button class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" type="button">
+<i class="bi bi-download"></i> Exportar
+                            </button>
+<ul class="dropdown-menu">
+<li><a class="dropdown-item" onclick="exportarRelatorio('doacoes', 'pdf')">PDF</a></li>
+<li><a class="dropdown-item" onclick="exportarRelatorio('doacoes', 'excel')">Excel</a></li>
+</ul>
+</div>
+<button class="btn btn-success" onclick="iniciarApresentacao('doacoes')"><i class="bi bi-play-circle"></i> Modo Apresentação</button>
+</div>
+</div>
+</div>
+<!-- Seção de Logs -->
+<div class="dashboard-section" id="logsSection" style="display: none;">
+<div class="section-header">
+<h2><i class="bi bi-clock-history"></i> Dashboard de Logs</h2>
+</div>
+<div class="section-content">
+<div class="charts-grid">
+<div class="chart-container" id="acessosSistemaChart"></div>
+<div class="chart-container" id="atividadesSistemaChart"></div>
+</div>
+<div class="action-buttons">
+<button class="btn btn-primary" onclick="verRelatorio('logs')"><i class="bi bi-file-text"></i> Ver Relatório Mensal</button>
+<button class="btn btn-secondary" onclick="exportarRelatorio('logs')"><i class="bi bi-download"></i> Exportar Relatório</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="action-buttons">
+<button class="btn btn-primary" onclick="verRelatorio('alunos')"><i class="bi bi-file-text"></i> Ver Relatório Mensal</button>
+<button class="btn btn-secondary" onclick="exportarRelatorio('alunos')"><i class="bi bi-download"></i> Exportar Relatório</button>
+</div>
+<!-- Seção de Doações -->
+<div class="dashboard-section" id="doacoesSection">
+<div class="section-header">
+<h2><i class="bi bi-cash-coin"></i> Doações</h2>
+</div>
+<div class="section-content">
+<div class="charts-grid">
+<div class="chart-container" id="doacoesMensaisChart"></div>
+<div class="chart-container" id="tiposDoacoesChart"></div>
+</div>
+<div class="action-buttons">
+<button class="btn btn-primary" onclick="verRelatorio('doacoes')"><i class="bi bi-file-text"></i> Ver Relatório Mensal</button>
+<button class="btn btn-secondary" onclick="exportarRelatorio('doacoes')"><i class="bi bi-download"></i> Exportar Relatório</button>
+</div>
+</div>
+</div>
+<!-- Seção de Sistema/Logs -->
+<div class="dashboard-section" id="logsSection" style="display: none;">
+<div class="section-header">
+<h2><i class="bi bi-shield-check"></i> Sistema/Logs</h2>
+<div class="section-controls">
+<div class="filter-group">
+<select class="form-select" id="periodoLogsFilter">
+<option value="mes">Último Mês</option>
+<option value="trimestre">Último Trimestre</option>
+<option value="ano">Último Ano</option>
+</select>
+<input class="form-control" id="pesquisaLogs" placeholder="Pesquisar logs..." type="text"/>
+</div>
+<div class="layout-controls">
+<button class="btn btn-outline-primary" onclick="toggleGrafico('acessosSistemaChart')"><i class="bi bi-graph-up"></i></button>
+<button class="btn btn-outline-primary" onclick="toggleGrafico('atividadesSistemaChart')"><i class="bi bi-pie-chart"></i></button>
+<button class="btn btn-outline-primary" onclick="toggleGrafico('timelineChart')"><i class="bi bi-calendar3"></i></button>
+</div>
+</div>
+</div>
+<div class="section-content">
+<div class="kpi-container">
+<div class="kpi-card">
+<i class="bi bi-person-check"></i>
+<h3>Usuários Ativos</h3>
+<p id="usuariosAtivos">0</p>
+</div>
+<div class="kpi-card">
+<i class="bi bi-shield-check"></i>
+<h3>Alertas</h3>
+<p id="totalAlertas">0</p>
+</div>
+<div class="kpi-card">
+<i class="bi bi-activity"></i>
+<h3>Atividades Hoje</h3>
+<p id="atividadesHoje">0</p>
+</div>
+</div>
+<div class="charts-grid">
+<div class="chart-container" id="acessosSistemaChart"></div>
+<div class="chart-container" id="atividadesSistemaChart"></div>
+<div class="chart-container" id="timelineChart"></div>
+</div>
+<div class="timeline-container">
+<h3>Timeline de Atividades</h3>
+<div class="timeline" id="activityTimeline"></div>
+</div>
+<div class="action-buttons">
+<button class="btn btn-primary" onclick="verRelatorio('logs')"><i class="bi bi-file-text"></i> Ver Relatório</button>
+<div class="dropdown">
+<button class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" type="button">
+<i class="bi bi-download"></i> Exportar
+                            </button>
+<ul class="dropdown-menu">
+<li><a class="dropdown-item" onclick="exportarRelatorio('logs', 'pdf')">PDF</a></li>
+<li><a class="dropdown-item" onclick="exportarRelatorio('logs', 'excel')">Excel</a></li>
+</ul>
+</div>
+<button class="btn btn-success" onclick="iniciarApresentacao('logs')"><i class="bi bi-play-circle"></i> Modo Apresentação</button>
+</div>
+</div>
+</div>
+<!-- Scripts -->
+<script src="../libs/bootstrap.bundle.min.js"></script>
+<script src="../js/translations.js"></script>
+<script src="../js/settings-manager.js"></script>
+<script src="../js/session-timeout.js"></script>
+<script src="../js/dashboard.js"></script>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  const savedTheme = localStorage.getItem("modo-escuro");
+  if (savedTheme === "ativado") {
+    document.body.classList.add("modo-escuro");
+  }
+
+  const toggle = document.getElementById("toggle-modo-escuro");
+  if (toggle) {
+    toggle.addEventListener("click", () => {
+      document.body.classList.toggle("modo-escuro");
+      const ativado = document.body.classList.contains("modo-escuro");
+      localStorage.setItem("modo-escuro", ativado ? "ativado" : "desativado");
+    });
+  }
+});
+</script>
+<!-- Assistente Beta fixa -->
+<div id="beta-button" style="position:fixed;bottom:20px;right:20px;z-index:99999;background:#7a00cc;color:#fff;border:none;border-radius:50%;width:60px;height:60px;display:flex;align-items:center;justify-content:center;box-shadow:0 0 10px rgba(0,0,0,0.3);cursor:pointer;font-size:28px;">
+🤖
+</div>
+<div id="beta-drawer" style="position:fixed;top:0;right:-400px;width:350px;max-width:100%;height:100vh;background:white;box-shadow:-2px 0 10px rgba(0,0,0,0.2);transition:right 0.3s ease-in-out;z-index:99998;padding:20px;overflow-y:auto;">
+<button id="beta-close" style="float:right;font-size:20px;border:none;background:none;cursor:pointer;">✖</button>
+<h2>Beta</h2>
+<p>Olá! Eu sou a assistente virtual da plataforma. Como posso ajudar?</p>
+<input placeholder="Digite sua dúvida..." style="width:100%;padding:10px;margin-top:15px;border-radius:8px;border:1px solid #ccc;" type="text"/>
+</div>
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const betaButton = document.getElementById("beta-button");
+  const betaDrawer = document.getElementById("beta-drawer");
+  const betaClose = document.getElementById("beta-close");
+
+  if (betaButton && betaDrawer) {
+    betaButton.addEventListener("click", () => {
+      betaDrawer.style.right = "0";
+    });
+  }
+
+  if (betaClose && betaDrawer) {
+    betaClose.addEventListener("click", () => {
+      betaDrawer.style.right = "-400px";
+    });
+  }
+
+  document.addEventListener("click", (e) => {
+    if (
+      betaDrawer &&
+      !betaDrawer.contains(e.target) &&
+      !betaButton.contains(e.target)
+    ) {
+      betaDrawer.style.right = "-400px";
+    }
+  });
+});
+</script>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const html = document.documentElement;
+    const body = document.body;
+    const fonte = localStorage.getItem('preferenciaFonte');
+    const tema = localStorage.getItem('preferenciaTema');
+    const leitura = localStorage.getItem('preferenciaLeitura');
+
+    if (tema === 'escuro') html.classList.add('dark-mode');
+    else html.classList.remove('dark-mode');
+
+    if (leitura === 'ativado') html.classList.add('modo-leitura');
+    else html.classList.remove('modo-leitura');
+
+    if (fonte) {
+      html.style.setProperty('--tamanho-fonte', fonte);
+    }
+  });
+</script>
+
+<div class="assistente" id="assistente-virtual">
+<input id="chat-input" placeholder="Digite sua pergunta..." type="text"/>
+<button id="enviar-chat">Enviar</button>
+</div>
+</body>
+</html>

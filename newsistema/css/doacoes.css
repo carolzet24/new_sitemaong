@@ -1,0 +1,220 @@
+/* Estilos específicos para a página de doações */
+
+.donation-card {
+    background: var(--surface-color);
+    border-radius: 15px;
+    padding: 1.5rem;
+    box-shadow: var(--card-shadow);
+    transition: transform 0.2s, box-shadow 0.2s;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.donation-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--card-shadow-hover);
+}
+
+.donation-icon {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    color: var(--primary-color);
+}
+
+.donation-amount {
+    font-size: 1.75rem;
+    font-weight: 600;
+    color: var(--text-color);
+    margin: 0.5rem 0;
+}
+
+.donation-description {
+    color: var(--text-muted);
+    flex-grow: 1;
+    margin-bottom: 1rem;
+}
+
+.donation-form {
+    background: var(--surface-color);
+    border-radius: 15px;
+    padding: 2rem;
+    box-shadow: var(--card-shadow);
+}
+
+.donation-input-group {
+    position: relative;
+    margin-bottom: 1.5rem;
+}
+
+.donation-input-group .form-control {
+    padding-left: 2.5rem;
+    height: 3rem;
+    border-radius: 10px;
+    border: 2px solid var(--border-color);
+    background: var(--input-bg);
+    color: var(--text-color);
+    font-size: 1rem;
+}
+
+.donation-input-group .input-icon {
+    position: absolute;
+    left: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-muted);
+}
+
+.donation-tabs {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.donation-tab {
+    flex: 1;
+    padding: 1rem;
+    text-align: center;
+    background: var(--surface-color);
+    border: 2px solid var(--border-color);
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.donation-tab.active {
+    background: var(--primary-color);
+    color: white;
+    border-color: var(--primary-color);
+}
+
+.donation-tab:hover:not(.active) {
+    border-color: var(--primary-color);
+    color: var(--primary-color);
+}
+
+.recent-donations {
+    margin-top: 2rem;
+}
+
+.donation-item {
+    display: flex;
+    align-items: center;
+    padding: 1rem;
+    background: var(--surface-color);
+    border-radius: 10px;
+    margin-bottom: 1rem;
+    transition: transform 0.2s;
+}
+
+.donation-item:hover {
+    transform: translateX(5px);
+}
+
+.donor-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--primary-color);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 1rem;
+    font-weight: 600;
+}
+
+.donor-info {
+    flex-grow: 1;
+}
+
+.donor-name {
+    font-weight: 500;
+    color: var(--text-color);
+    margin: 0;
+}
+
+.donation-date {
+    font-size: 0.875rem;
+    color: var(--text-muted);
+    margin: 0;
+}
+
+.donation-value {
+    font-weight: 600;
+    color: var(--success-color);
+}
+
+.donation-progress {
+    margin: 2rem 0;
+}
+
+.progress-info {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.5rem;
+}
+
+.progress-bar {
+    height: 10px;
+    background: var(--border-color);
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    background: var(--primary-color);
+    border-radius: 5px;
+    transition: width 0.3s ease;
+}
+
+.donation-methods {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 1rem;
+    margin: 1.5rem 0;
+}
+
+.method-card {
+    text-align: center;
+    padding: 1rem;
+    border: 2px solid var(--border-color);
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.method-card:hover {
+    border-color: var(--primary-color);
+    color: var(--primary-color);
+}
+
+.method-card.selected {
+    background: var(--primary-color);
+    color: white;
+    border-color: var(--primary-color);
+}
+
+.method-icon {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+}
+
+.custom-amount {
+    display: none;
+}
+
+.custom-amount.active {
+    display: block;
+}
+
+@media (max-width: 768px) {
+    .donation-tabs {
+        flex-direction: column;
+    }
+    
+    .donation-methods {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
